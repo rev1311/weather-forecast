@@ -6,31 +6,49 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Weather App</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/style.css">
 </head>
 <body>
 
     <div class="container"  style="background-color: #000; padding: 10px;">
 
         <div class="row">
-            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 head" style="background-color: aqua;">I
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 head" style="background-color: aqua;"><h1>Weather Dashboard</h1>
             </div>
         </div>
 
         <div class="row">
-            <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" style="background-color: rgb(255, 0, 0);">II</div>
+            <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-4" style="background-color: rgb(255, 0, 0);">
+                <p>Search City:</p>
+                <input type="text" id="input"><button id="newCityBtn">Search</button>
+                <div id="cityHistory">prepend here</div>
+            </div>
             
-            <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8" style="background-color: rgb(212, 247, 14);">c
-                <div class="row">
-                        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="background-color: rgb(247, 18, 113);">III
+            <div class="col-8 col-sm-8 col-md-8 col-lg-8 col-xl-8 mx-auto" style="background-color: rgb(212, 247, 14);">
+                <div class="row mx-auto">
+                    <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 mx-auto" style="background-color: rgb(247, 18, 113);">
+                        <div class="displayCurrent">
+                            <h3 id="city"></h3>
+                            <h6 id="temp"></h6>
+                            <h6 id="humid"></h6>
+                            <h6 id="wind"></h6>
+                            <h6 id="uvIndex"></h6>
+                        </div>
                     </div>
-                <div class="row">
-                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" style="background-color: rgb(20, 238, 93);">cards
+                </div>
+                
+                <div class="row mx-auto">
+                    <div class="col-11 col-sm-11 col-md-11 col-lg-11 col-xl-11 mx-auto" style="background-color: rgb(20, 238, 93);">
+                        <h5>5 day forecast:</h5>
+                        <div id="fiveDay"></div>
+                    </div>
                 </div>
             </div>
         </div>
 
     </div>
-    
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+<script src="assets/js.js"></script>
 </body>
 </html>
