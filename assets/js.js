@@ -37,7 +37,7 @@ $(document).on("click", ".cityBtn", function() {
     event.preventDefault();
     var userCity = $(this).val();
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userCity +"&APPID=a9cb1a256ff4757d9f731b125d92cbce";
-
+                    
     $.ajax({
         url: queryURL,
         method: "GET"
@@ -54,7 +54,7 @@ function currentWeather(response) {
     var humid = response.main.humidity;
     var wind = response.wind.speed;
 console.log(temp);
-    $("#city").text(`${response.name}, ${momentJs}`);
+    $("#city").text(`${response.name} ${momentJs}`);
     $("#temp").text(`Temperature: ${temp}`);
     $("#humid").text(`Humidity: ${humid}`);
     $("#wind").text(`Wind Speed: ${wind}`);
@@ -99,11 +99,16 @@ function fiveDay(response) {
         for (var i = 0; i < response.list.length; i += 8) {
         
         var card = $("<div>").addClass("card");
-        var date = moment().format('MM / DD / YYYY');
         var img = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.list[i.toString()].weather[0].icon + "@2x.png");
         var textF = (((response.list[i.toString()].main.temp - 273.15) * 1.8) + 32).toFixed(1);
         var text = $("<p>").text(`Temperature: ${textF} F`);
         var humis = $("<p>").text(`Humidity: ${response.list[i.toString()].main.humidity}`);
+        var days = moment(momentJs).add(1, 'days');
+        
+        var date = moment(days++).format('MM / DD / YYYY');
+        var datePlus = momentJs;
+        console.log(momentJs[i])
+       
         
         card.append(date);
         card.append(img);
