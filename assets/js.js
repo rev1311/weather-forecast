@@ -1,1 +1,105 @@
- 
+$(function() {
+
+var momentJs = moment().format('(MM / DD / YYYY)');
+
+
+if (!localStorage.getItem("userHistory")) {
+    var userHistory = [];
+} else {
+    var userHistory = JSON.parse(localStorage.getItem("userHistory"));
+}
+
+
+currentCity();
+
+
+$("#newCityBtn").on("click", function(event) {
+    event.preventDefault();
+    var newCity = $("#input").val();
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + newCity +"&APPID=a9cb1a256ff4757d9f731b125d92cbce";
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response) {
+        currentWeather(response);
+        uvIndex(response);
+        // fiveDay(response)
+    });
+
+    userHistory.push(newCity);
+    saveToLocal();
+    currentCity();
+});
+
+// on click to recall history city, query API
+$(document).on("click", ".cityBtn", function(event) {
+    event.preventDefault();
+    var userCity = $(this).val();
+    var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userCity +"&APPID=a9cb1a256ff4757d9f731b125d92cbce";
+
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response) {
+        currentWeather(response);
+        uvIndex(response);
+        // fiveDay(response)
+    });
+});
+
+function currentWeather(response) {
+    $("#currentWeather").empty();
+    var temp = (((response.main.temp - 273.15) * 1.8) + 32).toFixed(1);
+    var humid = response.main.humidity;
+    var wind = response.wind.speed;
+console.log(temp);
+    $("#city").text(`${response.name}, ${momentJs}`);
+    $("#temp").text(`Temperature: ${temp}`);
+    $("#humid").text(`Humidity: ${humid}`);
+    $("#wind").text(`Wind Speed: ${wind}`);
+}
+
+function uvIndex(response) {
+    var lat = response.coord.lat;
+    var lon = response.coord.lon;
+    var queryURL ="http://api.openweathermap.org/data/2.5/uvi?APPID=a9cb1a256ff4757d9f731b125d92cbce&lat=" + lat + "&lon=" + lon;
+  
+    $.ajax({
+      url: queryURL,
+      method: "GET"
+    }).then(function(response) {  
+      var uvIndex = response.value;
+      $("#uvIndex").text(`UV index: ${uvIndex}`);
+    });
+}
+
+function currentCity() {
+    $("#cityHistory").empty();
+    for (var i = 0; i < userHistory.length; i++) {
+        var cityBtn = $("<button>").addClass("cityBtn").attr("value", userHistory[i]).text(userHistory[i]);
+console.log(userHistory[i])
+        $("#cityHistory").prepend(cityBtn);
+    }
+}
+
+
+function fiveDay () {
+    $("#fiveDay").empty();
+    
+}
+
+
+
+function saveToLocal() {
+    localStorage.setItem("userHistory", JSON.stringify(userHistory));
+}
+
+
+});
+
+
+
+
+
+
