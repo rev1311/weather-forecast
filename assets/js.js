@@ -25,6 +25,9 @@ $("#newCityBtn").on("click", function() {
         currentWeather(response);
         uvIndex(response);
         fiveDay(response)
+        console.log(response)
+        var imgSrc = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.list[0].weather[0].icon + "@2x.png");
+        $("#city").append(imgSrc);
     });
 
     userHistory.push(newCity);
