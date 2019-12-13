@@ -13,7 +13,7 @@ if (!localStorage.getItem("userHistory")) {
 currentCity();
 
 
-$("#newCityBtn").on("click", function(event) {
+$("#newCityBtn").on("click", function() {
     event.preventDefault();
     var newCity = $("#input").val();
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + newCity +"&APPID=a9cb1a256ff4757d9f731b125d92cbce";
@@ -24,7 +24,7 @@ $("#newCityBtn").on("click", function(event) {
     }).then(function(response) {
         currentWeather(response);
         uvIndex(response);
-        // fiveDay(response)
+        fiveDay(response)
     });
 
     userHistory.push(newCity);
@@ -33,7 +33,7 @@ $("#newCityBtn").on("click", function(event) {
 });
 
 // on click to recall history city, query API
-$(document).on("click", ".cityBtn", function(event) {
+$(document).on("click", ".cityBtn", function() {
     event.preventDefault();
     var userCity = $(this).val();
     var queryURL = "https://api.openweathermap.org/data/2.5/weather?q=" + userCity +"&APPID=a9cb1a256ff4757d9f731b125d92cbce";
@@ -44,7 +44,7 @@ $(document).on("click", ".cityBtn", function(event) {
     }).then(function(response) {
         currentWeather(response);
         uvIndex(response);
-        // fiveDay(response)
+        fiveDay(response)
     });
 });
 
@@ -84,9 +84,34 @@ console.log(userHistory[i])
 }
 
 
-function fiveDay () {
+function fiveDay(response) {
     $("#fiveDay").empty();
     
+    var lat = response.coord.lat;
+    var lon = response.coord.lon;
+    var queryURL ="http://api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&APPID=a9cb1a256ff4757d9f731b125d92cbce";
+    
+    $.ajax({
+        url: queryURL,
+        method: "GET"
+    }).then(function(response) {
+        console.log(response)
+        for (var i = 0; i < response.list.length; i += 8) {
+        
+        var card = $("<div>").addClass("card");
+        var date = moment().format('MM / DD / YYYY');
+        var img = $("<img>").attr("src", "http://openweathermap.org/img/wn/" + response.list[i.toString()].weather[0].icon + "@2x.png");
+        var textF = (((response.list[i.toString()].main.temp - 273.15) * 1.8) + 32).toFixed(1);
+        var text = $("<p>").text(`Temperature: ${textF} F`);
+        var humis = $("<p>").text(`Humidity: ${response.list[i.toString()].main.humidity}`);
+        
+        card.append(date);
+        card.append(img);
+        card.append(text);
+        card.append(humis);
+        $("#fiveDay").prepend(card);
+        }
+    });
 }
 
 
